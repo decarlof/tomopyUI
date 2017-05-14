@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoadFile</class>
+ <widget class="QMainWindow" name="LoadFile">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>578</width>
+    <height>504</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Load File</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Data Exchange</string>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>189</y>
+         <width>541</width>
+         <height>301</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="overlap_layout_2">
+        <item>
+         <widget class="QWidget" name="axis_view_widget_2" native="true">
+          <layout class="QGridLayout" name="gridLayout"/>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>541</width>
+         <height>144</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="input_layout">
+        <item>
+         <widget class="QPushButton" name="dataExchangeSelectButton">
+          <property name="text">
+           <string>Select Data Exchange File</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="dataLabel">
+          <property name="text">
+           <string>Data Size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="dataWhiteLabel">
+          <property name="text">
+           <string>Data White Size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="dataDarkLabel">
+          <property name="text">
+           <string>Data Dark Size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonClose">
+          <property name="text">
+           <string>Close</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionData_Exchange">
+   <property name="text">
+    <string>Data Exchange</string>
+   </property>
+  </action>
+  <action name="actionTiff">
+   <property name="text">
+    <string>Tiff</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

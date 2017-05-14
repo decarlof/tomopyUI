@@ -1,0 +1,102 @@
+#!/Users/decarlo/anaconda2/bin/python
+
+from PyQt4 import QtGui, QtCore, uic
+
+import sys 
+import os
+import tomopyui.util as util
+import tomopyui.qtvis as qtvis
+
+import pkg_resources
+
+class fileApp(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        super(fileApp, self).__init__(parent)
+        ui_file = pkg_resources.resource_filename('tomopyui', 'fileDX.ui')
+        self.ui = uic.loadUi(ui_file, self)
+        self.dataExchangeSelectButton.clicked.connect(self.dxchange_fname)
+        self.pushButtonClose.clicked.connect(self.close)
+        self.dataLabel.clear() 
+        self.dataDarkLabel.clear() 
+        self.dataWhiteLabel.clear() 
+        self.slice_viewer = None
+        self.overlap_viewer = qtvis.OverlapViewer()
+
+
+    def dxchange_fname(self):
+        self.dataLabel.clear() 
+        self.dataDarkLabel.clear() 
+        self.dataWhiteLabel.clear() 
+        hdf = QtCore.QString("Data Exchange File (*.h5 *.hdf *.HDF)")
+        fname =  QtGui.QFileDialog.getOpenFileName (self,  filter=hdf)
+        if fname:
+            self.dataLabel.setText("Data: " + str(util.read_dx_dims(str(fname), 'data')))
+            self.dataDarkLabel.setText("Dark: " + str(util.read_dx_dims(str(fname), 'data_dark')))
+            self.dataWhiteLabel.setText("White: " + str(util.read_dx_dims(str(fname), 'data_white')))
+            self.parent().dataLabel.setText("Data: " + str(util.read_dx_dims(str(fname), 'data')))
+            self.parent().dataDarkLabel.setText("Dark: " + str(util.read_dx_dims(str(fname), 'data_dark')))
+            self.parent().dataWhiteLabel.setText("White: " + str(util.read_dx_dims(str(fname), 'data_white')))
+            self.overlap_layout_2.addWidget(self.overlap_viewer)
+            #self.dataSize = util.read_dx_dims(str(fname), 'data')
+
+    def close(self):
+        print('test')
+
+class tomopyApp(QtGui.QMainWindow):
+    def __init__(self):
+        super(self.__class__, self).__init__()
+        ui_file = pkg_resources.resource_filename('tomopyui', 'tomopy.ui')
+        self.ui = uic.loadUi(ui_file, self)
+        self.last_dir = '.'
+
+        self.dataExchangeSelectButton.clicked.connect(self.dxchange_fname)   
+        self.topFolderSelectButton.clicked.connect(self.select_folder)       
+        self.pushButton.clicked.connect(self.on_pushButton_clicked)
+
+        self.listWidget.clear() 
+        self.dataLabel.clear() 
+        self.dataDarkLabel.clear() 
+        self.dataWhiteLabel.clear() 
+        self.dialog = fileApp(self)
+
+    def on_pushButton_clicked(self):
+        self.dialog.show()
+
+    def select_folder(self):
+        self.listWidget.clear()
+        directory = QtGui.QFileDialog.getExistingDirectory(self)
+
+        if directory: # if user didn't pick a directory don't continue
+            for fname in os.listdir(directory): # for all files, if any, in the directory
+                self.listWidget.addItem(fname)  # add file to the listWidget
+                self.listWidget.setSortingEnabled(True)  # add file to the listWidget
+                print(directory)
+
+    def dxchange_fname(self):
+        self.listWidget.clear() 
+        self.dataLabel.clear() 
+        self.dataDarkLabel.clear() 
+        self.dataWhiteLabel.clear() 
+        hdf = QtCore.QString("Data Exchange File (*.h5 *.hdf *.HDF)")
+        fname =  QtGui.QFileDialog.getOpenFileName (self,  filter=hdf)
+        if fname:
+            self.listWidget.addItem(fname)
+            self.listWidget.addItem("Data: " + str(util.read_dx_dims(str(fname), 'data')))
+            self.listWidget.addItem("Dark: " + str(util.read_dx_dims(str(fname), 'data_dark')))
+            self.listWidget.addItem("White: " + str(util.read_dx_dims(str(fname), 'data_white')))
+            self.dataLabel.setText("Data: " + str(util.read_dx_dims(str(fname), 'data')))
+            self.dataDarkLabel.setText("Dark: " + str(util.read_dx_dims(str(fname), 'data_dark')))
+            self.dataWhiteLabel.setText("White: " + str(util.read_dx_dims(str(fname), 'data_white')))
+
+
+
+def main():
+    app = QtGui.QApplication(sys.argv)  # A new instance of QApplication
+    form = tomopyApp()                    # We set the form to be tomoApp
+    form.show()                         # Show the form
+    app.exec_()                         # and execute the app
+
+
+if __name__ == '__main__':              # if we're running file directly and not importing it
+    main()                              # run the main function
+
